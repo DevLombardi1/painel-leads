@@ -6,7 +6,7 @@
   <title>Painel de Leads - Bis2Bis</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 20px;
       background: #fdfcfa;
     }
@@ -36,12 +36,15 @@
       padding: 8px;
       margin-bottom: 15px;
       margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <div style="text-align:center; margin-bottom: 10px;">
-    <img src="https://raw.githubusercontent.com/Andrevba/painel-leads/main/bis2bis-logo.png" alt="Logo Bis2Bis" style="height: 60px;">
+    <img src="https://chat.openai.com/mnt/data/8e5f9ed1-6369-48e5-a702-de7c8d6d9f62.png" alt="Logo Bis2Bis" style="height: 60px;">
   </div>
   <h1>Painel de Leads - Bis2Bis</h1>
 
@@ -97,13 +100,8 @@
       });
     }
 
-    document.getElementById("searchInput").addEventListener("input", function () {
-      filterTable();
-    });
-
-    document.getElementById("statusFilter").addEventListener("change", function () {
-      filterTable();
-    });
+    document.getElementById("searchInput").addEventListener("input", filterTable);
+    document.getElementById("statusFilter").addEventListener("change", filterTable);
 
     function filterTable() {
       const search = document.getElementById("searchInput").value.toLowerCase();
@@ -123,11 +121,11 @@
       const statusColIndex = headers.findIndex(h => h.toLowerCase().includes("status"));
       if (statusColIndex === -1) return;
 
-      const statusSet = new Set();
-      data.forEach(row => statusSet.add(row[statusColIndex]));
-
       const select = document.getElementById("statusFilter");
-      statusSet.forEach(status => {
+      select.innerHTML = '<option value="">Filtrar por status</option>';
+
+      data.forEach(row => {
+        const status = row[statusColIndex];
         const opt = document.createElement("option");
         opt.value = status;
         opt.textContent = status;
