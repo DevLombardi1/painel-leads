@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Leads - Bis2Bis</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+    h1 { text-align: center; }
+    table { border-collapse: collapse; width: 100%; background: white; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #222; color: white; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Painel de Leads - Bis2Bis</h1>
+  <table id="leadsTable">
+    <thead>
+      <tr></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const sheetURL = "https://script.google.com/a/macros/nexsell.com.br/s/AKfycbycNrKcnyqzh75ETmDJU5Kkw7_r53US_g0dqF3sq3GtDZ5Jq1jbpzD7mJSl3KKktK-o/exec";
+
+    fetch(sheetURL)
+      .then(res => res.json())
+      .then(data => {
+        const table = document.getElementById("leadsTable");
+        const header = table.querySelector("thead tr");
+        const tbody = table.querySelector("tbody");
+
+        // Cabeçalho
+        data[0].forEach(col => {
+          const th = document.createElement("th");
+          th.textContent = col;
+          header.appendChild(th);
+        });
+
+        // Dados
+        for (let i = 1; i < data.length; i++) {
+          const row = document.createElement("tr");
+          data[i].forEach(cell => {
+            const td = document.createElement("td");
+            td.textContent = cell;
+            row.appendChild(td);
+          });
+          tbody.appendChild(row);
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao carregar dados da planilha:", err);
+        document.body.innerHTML += `<p style="color:red">Erro ao carregar os dados. Verifique a URL do script.</p>`;
+      });
+  </script>
+</body>
+</html>
